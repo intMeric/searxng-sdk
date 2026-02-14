@@ -29,15 +29,15 @@ const { results } = await client
 
 ### `new SearxngClient(config)`
 
-| Option | Type | Default | Description |
-|---|---|---|---|
-| `baseUrl` | `string` | **required** | SearXNG instance URL |
-| `timeout` | `number` | `10000` | Request timeout in ms |
-| `retry` | `{ maxRetries, baseDelayMs }` | `{ 3, 1000 }` | Retry on 429 with exponential backoff |
-| `defaultLanguage` | `string` | — | Applied to all searches |
-| `defaultCategories` | `string[]` | — | Applied to all searches |
-| `defaultSafesearch` | `0 \| 1 \| 2` | — | Applied to all searches |
-| `headers` | `Record<string, string>` | — | Custom headers (e.g. proxy auth) |
+| Option              | Type                          | Default       | Description                           |
+| ------------------- | ----------------------------- | ------------- | ------------------------------------- |
+| `baseUrl`           | `string`                      | **required**  | SearXNG instance URL                  |
+| `timeout`           | `number`                      | `10000`       | Request timeout in ms                 |
+| `retry`             | `{ maxRetries, baseDelayMs }` | `{ 3, 1000 }` | Retry on 429 with exponential backoff |
+| `defaultLanguage`   | `string`                      | —             | Applied to all searches               |
+| `defaultCategories` | `string[]`                    | —             | Applied to all searches               |
+| `defaultSafesearch` | `0 \| 1 \| 2`                 | —             | Applied to all searches               |
+| `headers`           | `Record<string, string>`      | —             | Custom headers (e.g. proxy auth)      |
 
 ### `client.search(query)`
 
@@ -67,6 +67,8 @@ Returns a `SearchBuilder` with chainable methods:
 ```
 
 ## Prerequisites
+
+You can run Searxng with docker : [Searxng documentation](https://docs.searxng.org/admin/installation-docker.html)
 
 Your SearXNG instance must have JSON format enabled in `settings.yml`:
 
