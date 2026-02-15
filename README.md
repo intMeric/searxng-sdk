@@ -58,11 +58,62 @@ Returns a `SearchBuilder` with chainable methods:
 ```ts
 {
   query: string;
-  results: SearchResult[];       // { title, url, content, engine, publishedDate?, author?, thumbnail?, imgSrc?, category? }
+  numberOfResults: number;
+  results: SearchResult[];
+  answers: Answer[];
   suggestions: string[];
   corrections: string[];
-  infobox?: Infobox;             // { title, imgSrc?, content?, attributes, urls, relatedTopics }
+  infobox?: Infobox;
   unresponsiveEngines: [string, string][];
+}
+```
+
+### `SearchResult`
+
+```ts
+{
+  title: string;
+  url: string;
+  content: string;
+  engine: string;
+  engines: string[];             // all engines that returned this result
+  positions: number[];           // position in each engine
+  score: number;                 // relevance score
+  publishedDate?: string;
+  pubdate?: string;              // alternative date format
+  author?: string;
+  thumbnail?: string;
+  imgSrc?: string;
+  category?: string;
+  metadata?: string;             // e.g. "1/28/2026 | Seeking Alpha"
+  template?: string;             // "default.html", "images.html", "videos.html", ...
+  parsedUrl?: string[];          // URL split into segments
+  priority?: string;
+}
+```
+
+### `Answer`
+
+```ts
+{
+  answer: string;                // direct answer text
+  url: string;                   // source URL
+  engine: string;                // engine that provided the answer
+  template?: string;
+  parsedUrl?: string[];
+}
+```
+
+### `Infobox`
+
+```ts
+{
+  title: string;
+  imgSrc?: string;
+  content?: string;
+  attributes: { label: string; value: string }[];
+  urls: { url: string; title: string }[];
+  relatedTopics: { name: string; suggestions: string[] }[];
 }
 ```
 
