@@ -1,6 +1,7 @@
 import type {
   SearchResponse,
   SearchResult,
+  Answer,
   Infobox,
   InfoboxAttribute,
   InfoboxUrl,
@@ -14,7 +15,9 @@ type RawResponse = Record<string, unknown>;
 export function mapRawResponse(raw: RawResponse): SearchResponse {
   return {
     query: String(raw["query"] ?? ""),
+    numberOfResults: Number(raw["number_of_results"] ?? 0),
     results: mapResults(raw["results"]),
+    answers: mapAnswers(raw["answers"]),
     suggestions: mapStringArray(raw["suggestions"]),
     corrections: mapStringArray(raw["corrections"]),
     infobox: raw["infoboxes"] ? mapInfobox(raw["infoboxes"]) : undefined,
@@ -30,11 +33,19 @@ function mapResults(raw: unknown): SearchResult[] {
     url: String(r["url"] ?? ""),
     content: String(r["content"] ?? ""),
     engine: String(r["engine"] ?? ""),
+    engines: mapStringArray(r["engines"]),
+    positions: mapNumberArray(r["positions"]),
+    score: Number(r["score"] ?? 0),
     publishedDate: optionalString(r["publishedDate"] ?? r["published_date"]),
+    pubdate: optionalString(r["pubdate"]),
     author: optionalString(r["author"]),
     thumbnail: optionalString(r["thumbnail"] ?? r["thumbnail_src"]),
     imgSrc: optionalString(r["img_src"]),
     category: optionalString(r["category"]),
+    metadata: optionalString(r["metadata"]),
+    template: optionalString(r["template"]),
+    parsedUrl: mapOptionalStringArray(r["parsed_url"]),
+    priority: optionalString(r["priority"]),
   }));
 }
 
@@ -82,6 +93,17 @@ function mapInfoboxRelatedTopics(raw: unknown): InfoboxRelatedTopic[] {
   }));
 }
 
+function mapAnswers(raw: unknown): Answer[] {
+  if (!Array.isArray(raw)) return [];
+  return raw.map((a: RawRecord) => ({
+    answer: String(a["answer"] ?? ""),
+    url: String(a["url"] ?? ""),
+    engine: String(a["engine"] ?? ""),
+    template: optionalString(a["template"]),
+    parsedUrl: mapOptionalStringArray(a["parsed_url"]),
+  }));
+}
+
 function mapUnresponsiveEngines(raw: unknown): UnresponsiveEngine[] {
   if (!Array.isArray(raw)) return [];
   return raw
@@ -91,6 +113,16 @@ function mapUnresponsiveEngines(raw: unknown): UnresponsiveEngine[] {
 
 function mapStringArray(raw: unknown): string[] {
   if (!Array.isArray(raw)) return [];
+  return raw.map(String);
+}
+
+function mapNumberArray(raw: unknown): number[] {
+  if (!Array.isArray(raw)) return [];
+  return raw.map(Number);
+}
+
+function mapOptionalStringArray(raw: unknown): string[] | undefined {
+  if (!Array.isArray(raw)) return undefined;
   return raw.map(String);
 }
 

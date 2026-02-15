@@ -3,11 +3,19 @@ export interface SearchResult {
   url: string;
   content: string;
   engine: string;
+  engines: string[];
+  positions: number[];
+  score: number;
   publishedDate?: string;
+  pubdate?: string;
   author?: string;
   thumbnail?: string;
   imgSrc?: string;
   category?: string;
+  metadata?: string;
+  template?: string;
+  parsedUrl?: string[];
+  priority?: string;
 }
 
 export interface InfoboxAttribute {
@@ -34,11 +42,21 @@ export interface Infobox {
   relatedTopics: InfoboxRelatedTopic[];
 }
 
+export interface Answer {
+  answer: string;
+  url: string;
+  engine: string;
+  template?: string;
+  parsedUrl?: string[];
+}
+
 export type UnresponsiveEngine = [engine: string, reason: string];
 
 export interface SearchResponse {
   query: string;
+  numberOfResults: number;
   results: SearchResult[];
+  answers: Answer[];
   suggestions: string[];
   corrections: string[];
   infobox?: Infobox;

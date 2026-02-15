@@ -11,6 +11,7 @@ export type { TimeRange } from "./types/search-params.ts";
 export type {
   SearchResponse,
   SearchResult,
+  Answer,
   Infobox,
   InfoboxAttribute,
   InfoboxUrl,
